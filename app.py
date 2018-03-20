@@ -60,7 +60,7 @@ def stock():
       w = 12*60*60*1000 # half day in ms
 
       #Render Chart
-      fig = figure(title = None, plot_width = 600, plot_height = 480, x_axis_type = "datetime", toolbar_location = "below", tools = "crosshair, pan,wheel_zoom,box_zoom,reset,resize")
+      fig = figure(title = None, plot_width = 600, plot_height = 480, x_axis_type = "datetime", toolbar_location = "below", tools = "crosshair, pan, wheel_zoom, box_zoom, reset")
       
       fig.segment(stockdata.Date, stockdata.High, stockdata.Date, stockdata.Low, color = "black")
       fig.rect(stockdata.Date[inc], mids[inc], w, spans[inc], fill_color = "#D5E1DD", line_color = "black")
@@ -72,10 +72,13 @@ def stock():
       #  js_files = INLINE.js_files,
       #  css_files = INLINE.css_files,
       #)
+      js_resources = INLINE.render_js()
+      css_resources = INLINE.render_css()
 
       script, div = components(fig, INLINE)
 
       #html = render_template('stock.html', status = {'code':1, 'msg':'OK'}, stock = {'code':stockcode, 'period':stockperiod}, plot = {'script':script, 'div':div, 'resources':plot_resources})
+      html = render_template('stock.html', status = {'code':1, 'msg':'OK'}, stock = {'code':stockcode, 'period':stockperiod}, plot = {'script':script, 'div':div}, js_resources=js_resources, css_resources=css_resources)
     else:
       html = render_template('stock.html', status = {'code':2, 'msg':'Server Error'}, stock = {'code':stockcode, 'period':stockperiod})
   else:

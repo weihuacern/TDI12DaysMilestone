@@ -5,9 +5,9 @@
   <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
-  <title>Simple Stock Chart</title>
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <title>Stock Plotting with bokeh</title>
+  <meta name="description" content="The data incubator, 2018 March">
+  <meta name="author" content="Hua Wei">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -29,16 +29,16 @@
   <!-- CSS For Bokeh Plot
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 <style>
-	.plotdiv {margin:0px}
+  .plotdiv {margin:0px}
 </style>
 
-
-  <!-- Bokeh Chart Resource
+  <!-- Bokeh Plot Resource
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-	{% if status.code==1 %}
-	{{ plot.resources|indent(4)|safe }}
-	{{ plot.script|indent(4)|safe }}
-	{% endif %}
+  {% if status.code==1 %}
+    {{ js_resources|indent(4)|safe }}
+    {{ css_resources|indent(4)|safe }}
+    {{ plot.script|indent(4)|safe }}
+  {% endif %}
   
 </head>
 <body>
@@ -47,29 +47,27 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="container">
     <div class="row">
-		<h3 style="margin-top:50px">Simple Stock Chart</h3>
-		[ <b>stockchart</b> | <a href="{{ url_for('about') }}">about</a> ]
-		<br/><br/>
-		
-	    <form action="{{ url_for('stock') }}" method=get>
-			<label>Stockcode</label>
-			<input type="text" size="30" name="stockcode" value="{% if status.code==1 %}{{stock.code}}{% endif %}"/>
-			<select name="period">
-				<option value="1M" {% if stock.period=='1M' %}selected{% endif %}>1M</option>
-				<option value="6M" {% if stock.period=='6M' %}selected{% endif %}>6M</option>
-				<option value="1Y" {% if stock.period=='1Y' %}selected{% endif %}>1Y</option>
-				<option value="All" {% if stock.period=='All' %}selected{% endif %}>All</option>
-			</select>
-			<input class="button-primary" type="submit" value="SHOW CHART"/>
-	    </form>
-
-	{% if status.code>1 %}        
-        <p>{{status.msg}}</p>	
-	{% endif %}        	
-	{% if status.code==1 %}
-        {{ plot.div|indent(4)|safe }}
-	{% endif %}        
-
+    <h3 style="margin-top:50px">Simple Stock Plot</h3>
+    [ <b>stockplot</b> | <a href="{{ url_for('about') }}">about</a> ]
+    <br/><br/>
+    
+      <form action="{{ url_for('stock') }}" method=get>
+      <label>Stockcode</label>
+      <input type="text" size="30" name="stockcode" value="{% if status.code==1 %}{{stock.code}}{% endif %}"/>
+      <select name="period">
+        <option value="1M" {% if stock.period=='1M' %}selected{% endif %}>1M</option>
+        <option value="6M" {% if stock.period=='6M' %}selected{% endif %}>6M</option>
+        <option value="1Y" {% if stock.period=='1Y' %}selected{% endif %}>1Y</option>
+        <option value="All" {% if stock.period=='All' %}selected{% endif %}>All</option>
+      </select>
+      <input class="button-primary" type="submit" value="SHOW CHART"/>
+      </form>
+        {% if status.code>1 %}        
+          <p>{{status.msg}}</p>
+        {% endif %}   
+        {% if status.code==1 %}
+          {{ plot.div|indent(4)|safe }}
+        {% endif %}        
     </div>
   </div>
 
@@ -77,6 +75,3 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 </body>
 </html>
-
-
-
