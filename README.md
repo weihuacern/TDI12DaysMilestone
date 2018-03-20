@@ -3,6 +3,14 @@ https://www.thedataincubator.com/12day.html
 
 ## Day12: Flask on Heroku
 
+Quick remote build and test:
+```
+heroku create --buildpack https://github.com/kennethreitz/conda-buildpack.git
+git push heroku master
+heroku ps:scale web=1
+heroku open
+```
+
 This project is intended to help you tie together some important concepts and
 technologies from the 12-day course, including Git, Flask, JSON, Pandas,
 Requests, Heroku, and Bokeh for visualization.

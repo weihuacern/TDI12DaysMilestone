@@ -1,2 +1,4 @@
 gunicorn==19.7.1
+oauth
+oauthlib
 requests==2.18.4
