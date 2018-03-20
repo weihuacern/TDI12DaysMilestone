@@ -5,7 +5,7 @@
   <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
-  <title>About</title>
+  <title>Simple Stock Chart</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -26,6 +26,20 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="{{ url_for('static',filename='images/favicon.png')}}">
 
+  <!-- CSS For Bokeh Plot
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<style>
+	.plotdiv {margin:0px}
+</style>
+
+
+  <!-- Bokeh Chart Resource
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	{% if status.code==1 %}
+	{{ plot.resources|indent(4)|safe }}
+	{{ plot.script|indent(4)|safe }}
+	{% endif %}
+  
 </head>
 <body>
 
@@ -34,13 +48,30 @@
   <div class="container">
     <div class="row">
 		<h3 style="margin-top:50px">Simple Stock Chart</h3>
-		[ <a href="{{ url_for('stock') }}">stockchart</a> | <b>about</b> ]
-		<hr/>
-        <p>This is a small program which will load stockquote data from <a href="https://www.quandl.com">QuanDL</a> by '<a href="http://www.python-requests.org/en/latest/">requests</a>' library, parse the JSON data with '<a href="https://pypi.python.org/pypi/simplejson/">simplejson</a>' library, process the data in '<a href="http://pandas.pydata.org/pandas-docs/stable/index.html">pandas</a>' dataframe and show a '<a href="http://bokeh.pydata.org/en/latest/">Bokeh</a>' plot through embedded HTML</p>
+		[ <b>stockchart</b> | <a href="{{ url_for('about') }}">about</a> ]
+		<br/><br/>
+		
+	    <form action="{{ url_for('stock') }}" method=get>
+			<label>Stockcode</label>
+			<input type="text" size="30" name="stockcode" value="{% if status.code==1 %}{{stock.code}}{% endif %}"/>
+			<select name="period">
+				<option value="1M" {% if stock.period=='1M' %}selected{% endif %}>1M</option>
+				<option value="6M" {% if stock.period=='6M' %}selected{% endif %}>6M</option>
+				<option value="1Y" {% if stock.period=='1Y' %}selected{% endif %}>1Y</option>
+				<option value="All" {% if stock.period=='All' %}selected{% endif %}>All</option>
+			</select>
+			<input class="button-primary" type="submit" value="SHOW CHART"/>
+	    </form>
+
+	{% if status.code>1 %}        
+        <p>{{status.msg}}</p>	
+	{% endif %}        	
+	{% if status.code==1 %}
+        {{ plot.div|indent(4)|safe }}
+	{% endif %}        
 
     </div>
   </div>
-  
 
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
