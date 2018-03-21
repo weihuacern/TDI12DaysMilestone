@@ -1,8 +1,3 @@
-dill
-Flask
-gunicorn=
-Jinja2
-oauth
-oauthlib
-requests
-simplejson
+gunicorn == 19.7.1
+oauthlib == 2.0.6
+requests == 2.18.4
