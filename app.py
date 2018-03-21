@@ -21,10 +21,10 @@ def about():
 #Main Process
 @app.route('/stock')
 def stock():
-  stockcode = request.args.get('stockcode')
+  stockticker = request.args.get('stockticker')
   stockperiod = str(request.args.get('period'))
 
-  if stockcode and stockcode.strip():
+  if stockticker and stockticker.strip():
     #Request data from Quandl
     baseURL = 'https://www.quandl.com/api/v1/datasets/WIKI/'
     periodURL = {'1M':'?trim_start=' + (datetime.datetime.now() - datetime.timedelta(days=30)).strftime('%Y-%m-%d'),
@@ -32,14 +32,14 @@ def stock():
       '1Y':'?trim_start=' + (datetime.datetime.now() - datetime.timedelta(days=365)).strftime('%Y-%m-%d'),
       'All':'',
       'None':''}
-    jsonURL = baseURL + stockcode + '.json' + periodURL[stockperiod]
+    jsonURL = baseURL + stockticker + '.json' + periodURL[stockperiod]
     jsonRespond = requests.get(jsonURL)
     HTTPstatusCode = jsonRespond.status_code
 
-    print('[URL]      ' + jsonURL)
-    print('[HTTP]     ' + str(HTTPstatusCode))
-    print('[Stockcode]' + stockcode)
-    print('[Period]   ' + stockperiod)
+    print('[URL]        ' + jsonURL)
+    print('[HTTP]       ' + str(HTTPstatusCode))
+    print('[StockTicker]' + stockticker)
+    print('[Period]     ' + stockperiod)
 
     #Parse data if HTTP Status is OK
     if HTTPstatusCode == 200:
@@ -69,11 +69,11 @@ def stock():
 
       script, div = components(fig, INLINE)
 
-      html = render_template('stock.html', status = {'code':1, 'msg':'OK'}, stock = {'code':stockcode, 'period':stockperiod}, plot = {'script':script, 'div':div}, js_resources=js_resources, css_resources=css_resources)
+      html = render_template('stock.html', status = {'code':1, 'msg':'OK'}, stock = {'ticker':stockticker, 'period':stockperiod}, plot = {'script':script, 'div':div}, js_resources=js_resources, css_resources=css_resources)
     else:
-      html = render_template('stock.html', status = {'code':2, 'msg':'Server Error'}, stock = {'code':stockcode, 'period':stockperiod})
+      html = render_template('stock.html', status = {'code':2, 'msg':'Server Error'}, stock = {'ticker':stockticker, 'period':stockperiod})
   else:
-    html = render_template('stock.html', status = {'code':3, 'msg':'Please Enter a Stockcode'}, stock = {'code':'None', 'period':'None'})
+    html = render_template('stock.html', status = {'code':3, 'msg':'Please Enter a stock ticker'}, stock = {'ticker':'None', 'period':'None'})
 
   return html
 
