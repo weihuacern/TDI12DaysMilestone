@@ -26,13 +26,14 @@ def stock():
 
   if stockticker and stockticker.strip():
     #Request data from Quandl
-    baseURL = 'https://www.quandl.com/api/v1/datasets/WIKI/'
-    periodURL = {'1M':'?trim_start=' + (datetime.datetime.now() - datetime.timedelta(days=30)).strftime('%Y-%m-%d'),
-      '6M':'?trim_start=' + (datetime.datetime.now() - datetime.timedelta(days=183)).strftime('%Y-%m-%d'),
-      '1Y':'?trim_start=' + (datetime.datetime.now() - datetime.timedelta(days=365)).strftime('%Y-%m-%d'),
-      'All':'',
-      'None':''}
-    jsonURL = baseURL + stockticker + '.json' + periodURL[stockperiod]
+    #https://www.quandl.com/api/v3/datasets/WIKI/A.json?api_key=bFyyXx1cePZvde71f-cF&start_date=2018-02-18&end_date=2018-03-20
+    baseURL = 'https://www.quandl.com/api/v3/datasets/WIKI/'
+    periodURL = {'1M':'&start_date=' + (datetime.datetime.now() - datetime.timedelta(days=30) ).strftime('%Y-%m-%d') + '&end_date=' + datetime.datetime.now().strftime('%Y-%m-%d'),
+                 '6M':'&start_date=' + (datetime.datetime.now() - datetime.timedelta(days=183)).strftime('%Y-%m-%d') + '&end_date=' + datetime.datetime.now().strftime('%Y-%m-%d'),
+                 '1Y':'&start_date=' + (datetime.datetime.now() - datetime.timedelta(days=365)).strftime('%Y-%m-%d') + '&end_date=' + datetime.datetime.now().strftime('%Y-%m-%d'),
+                 'All':'',
+                 'None':''}
+    jsonURL = baseURL + stockticker + '.json?api_key=bFyyXx1cePZvde71f-cF' + periodURL[stockperiod]
     jsonRespond = requests.get(jsonURL)
     HTTPstatusCode = jsonRespond.status_code
 
@@ -43,8 +44,8 @@ def stock():
 
     #Parse data if HTTP Status is OK
     if HTTPstatusCode == 200:
-      jheader = (jsonRespond.json())['column_names']
-      jdata = (jsonRespond.json())['data']
+      jheader = (jsonRespond.json())['dataset']['column_names']
+      jdata = (jsonRespond.json())['dataset']['data']
       stockdata = pd.DataFrame(jdata, columns=jheader)
       stockdata["Date"] = pd.to_datetime(stockdata["Date"])
       print(stockdata.head())
