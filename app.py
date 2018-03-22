@@ -33,10 +33,11 @@ def stock():
                  '1Y':'start_date=' + (datetime.datetime.now() - datetime.timedelta(days=365)).strftime('%Y-%m-%d') + '&end_date=' + datetime.datetime.now().strftime('%Y-%m-%d'),
                  'All':'',
                  'None':''}
-    jsonURL = baseURL + stockticker + '.json?' + periodURL[stockperiod] + '&api_key=bFyyXx1cePZvde71f-cF'
-    #jsonURL = baseURL + stockticker + '.json?api_key=bFyyXx1cePZvde71f-cF' + periodURL[stockperiod]
-    jsonRespond = requests.get(jsonURL)
-    #jsonRespond = requests.get(jsonURL, auth=('user', 'pass'))
+    #jsonURL = baseURL + stockticker + '.json?' + periodURL[stockperiod] + '&api_key=bFyyXx1cePZvde71f-cF'
+    #jsonRespond = requests.get(jsonURL)
+
+    jsonURL = baseURL + stockticker + '.json?' + periodURL[stockperiod]
+    jsonRespond = requests.get(jsonURL, auth=(os.environ['Quandl_KEY'], os.environ['Quandl_SECRET']))
     HTTPstatusCode = jsonRespond.status_code
 
     print('[URL]        ' + jsonURL)
