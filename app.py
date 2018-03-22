@@ -28,7 +28,6 @@ def stock():
 
   if stockticker and stockticker.strip():
     #Request data from Quandl
-    #https://www.quandl.com/api/v3/datasets/WIKI/A.json?api_key=bFyyXx1cePZvde71f-cF&start_date=2018-02-18&end_date=2018-03-20
     baseURL = 'https://www.quandl.com/api/v3/datasets/WIKI/'
     periodURL = {'1M':'start_date=' + (datetime.datetime.now() - datetime.timedelta(days=30) ).strftime('%Y-%m-%d') + '&end_date=' + datetime.datetime.now().strftime('%Y-%m-%d'),
                  '6M':'start_date=' + (datetime.datetime.now() - datetime.timedelta(days=183)).strftime('%Y-%m-%d') + '&end_date=' + datetime.datetime.now().strftime('%Y-%m-%d'),
