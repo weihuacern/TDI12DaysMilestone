@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for
 import requests
+from requests.auth import HTTPBasicAuth
 import pandas as pd
 import datetime
 
@@ -34,11 +35,8 @@ def stock():
                  '1Y':'start_date=' + (datetime.datetime.now() - datetime.timedelta(days=365)).strftime('%Y-%m-%d') + '&end_date=' + datetime.datetime.now().strftime('%Y-%m-%d'),
                  'All':'',
                  'None':''}
-    #jsonURL = baseURL + stockticker + '.json?' + periodURL[stockperiod] + '&api_key=bFyyXx1cePZvde71f-cF'
-    #jsonRespond = requests.get(jsonURL)
-
-    jsonURL = baseURL + stockticker + '.json?' + periodURL[stockperiod]
-    jsonRespond = requests.get(jsonURL, auth=(os.environ['Quandl_KEY'], os.environ['Quandl_SECRET']))
+    jsonURL = baseURL + stockticker + '.json?' + periodURL[stockperiod] + '&api_key=' + os.environ['Quandl_APIKEY']
+    jsonRespond = requests.get(jsonURL)
     HTTPstatusCode = jsonRespond.status_code
 
     print('[URL]        ' + jsonURL)
