@@ -1,0 +1,42 @@
+// The classification of data structure
+digraph {
+	Collection
+	Linear
+	Nonlinear
+	Collection -> Linear
+	Collection -> Nonlinear
+	GeneralizedIndexing
+	DirectAccess
+	SequentialAccess
+	Linear -> GeneralizedIndexing
+	Linear -> DirectAccess
+	Linear -> SequentialAccess
+	Dictionary
+	HashTable
+	GeneralizedIndexing -> Dictionary
+	GeneralizedIndexing -> HashTable
+	Array
+	Record
+	File
+	DirectAccess -> Array
+	DirectAccess -> Record
+	DirectAccess -> File
+	List
+	Stack
+	Queue
+	SequentialAccess -> List
+	SequentialAccess -> Stack
+	SequentialAccess -> Queue
+	Hierarchical
+	Group
+	Nonlinear -> Hierarchical
+	Nonlinear -> Group
+	Tree
+	Heap
+	Set
+	"Graph"
+	Hierarchical -> Tree
+	Hierarchical -> Heap
+	Group -> Set
+	Group -> "Graph"
+}
